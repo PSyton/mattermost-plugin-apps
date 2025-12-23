@@ -33,7 +33,7 @@ func testStatic(th *Helper) {
 
 	th.InstallAppWithCleanup(app)
 
-	iconURL := fmt.Sprintf("/plugins/com.mattermost.apps/apps/%s/static/icon.png", app.Manifest.AppID)
+	iconURL := fmt.Sprintf("/plugins/io.github.psyton.mattermost-apps/apps/%s/static/icon.png", app.Manifest.AppID)
 
 	th.Run("static icon accessible as user", func(th *Helper) {
 		resp, err := th.UserClientPP.DoAPIGET(iconURL, "")

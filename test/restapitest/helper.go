@@ -23,7 +23,7 @@ import (
 // Note: run
 // set export MM_SERVER_PATH="<go path>/src/github.com/mattermost/mattermost/server"
 // command (or equivalent) before running the tests
-var pluginID = "com.mattermost.apps"
+var pluginID = "io.github.psyton.mattermost-apps"
 
 type Helper struct {
 	*testing.T
@@ -141,7 +141,7 @@ func (th *Helper) verifyContext(level apps.ExpandLevel, app *apps.App, asSystemA
 
 func (th *Helper) verifyExpandedContext(level apps.ExpandLevel, app *apps.App, asSystemAdmin bool, expected, got apps.ExpandedContext) {
 	siteURL := *th.ServerTestHelper.Server.Config().ServiceSettings.SiteURL
-	appPath := "/plugins/com.mattermost.apps/apps/" + string(app.AppID)
+	appPath := "/plugins/io.github.psyton.mattermost-apps/apps/" + string(app.AppID)
 	require.Equal(th, siteURL, got.MattermostSiteURL)
 	require.Equal(th, appPath, got.AppPath)
 	require.Equal(th, app.BotUserID, got.BotUserID)
