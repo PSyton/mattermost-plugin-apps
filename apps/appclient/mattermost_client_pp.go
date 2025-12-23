@@ -22,7 +22,7 @@ const (
 	HeaderEtagClient = "If-None-Match"
 	HeaderAuth       = "Authorization"
 
-	AppsPluginName = "com.mattermost.apps"
+	AppsPluginName = "io.github.psyton.mattermost-apps"
 )
 
 type ClientPP struct {

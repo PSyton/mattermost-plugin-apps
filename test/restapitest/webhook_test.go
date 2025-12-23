@@ -17,7 +17,7 @@ import (
 )
 
 const webhookAppID = apps.AppID("webhooktest")
-const appURL = "/plugins/com.mattermost.apps/apps/" + string(webhookAppID)
+const appURL = "/plugins/io.github.psyton.mattermost-apps/apps/" + string(webhookAppID)
 
 func newWebhookApp(t *testing.T, onRemoteWebhook *apps.Call) *goapp.App {
 	app := goapp.MakeAppOrPanic(

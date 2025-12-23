@@ -77,7 +77,7 @@ func testEcho(th *Helper) {
 			},
 			Context: apps.Context{
 				ExpandedContext: apps.ExpandedContext{
-					AppPath:       "/plugins/com.mattermost.apps/apps/" + string(echoID),
+					AppPath:       "/plugins/io.github.psyton.mattermost-apps/apps/" + string(echoID),
 					DeveloperMode: true,
 				},
 				UserAgentContext: apps.UserAgentContext{
