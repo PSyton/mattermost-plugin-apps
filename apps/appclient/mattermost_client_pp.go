@@ -22,7 +22,7 @@ const (
 	HeaderEtagClient = "If-None-Match"
 	HeaderAuth       = "Authorization"
 
-	AppsPluginName = "io.github.psyton.mattermost-apps"
+	AppsPluginName = "ru.2gis.apps"
 )
 
 type ClientPP struct {

@@ -1,5 +1,5 @@
 {
-    "id": "io.github.psyton.mattermost-apps",
+    "id": "ru.2gis.apps",
     "name": "Apps",
     "description": "This plugin powers the Mattermost Apps Framework and is required for any Apps to run",
     "homepage_url": "https://developers.mattermost.com/integrate/apps",
