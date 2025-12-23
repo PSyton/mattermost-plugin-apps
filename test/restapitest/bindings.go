@@ -400,7 +400,7 @@ func testBindings(th *Helper) {
 		require.NoError(th, err)
 		require.Empty(th, out.Err)
 
-		appsURL := fmt.Sprintf("http://localhost:%v/plugins/io.github.psyton.mattermost-apps/apps", th.ServerTestHelper.Server.ListenAddr.Port)
+		appsURL := fmt.Sprintf("http://localhost:%v/plugins/ru.2gis.apps/apps", th.ServerTestHelper.Server.ListenAddr.Port)
 		expected := []apps.Binding{
 			{
 				Location: "/command",
