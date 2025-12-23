@@ -2,7 +2,7 @@
 
 ## Critical Rules
 
-1. **Namespace**: ALWAYS use `com.2gis.apps` (never `com.mattermost.apps` or `.v2`)
+1. **Namespace**: ALWAYS use `ru.2gis.apps` (never `com.mattermost.apps` or `.v2`)
 2. **NO Periodic Refresh**: Bindings cache updates only on-demand
 3. **Health Check Mandatory**: All apps must implement `/health` endpoint
 4. **Only /command**: No support for post_menu, channel_header, in_post
@@ -13,13 +13,13 @@
 ### Namespace Changes
 ```go
 // plugin.json
-"id": "com.2gis.apps"
+"id": "ru.2gis.apps"
 
 // apps/appclient/mattermost_client_pp.go
-AppsPluginName = "com.2gis.apps"
+AppsPluginName = "ru.2gis.apps"
 
 // All paths
-"/plugins/com.2gis.apps/apps/..."
+"/plugins/ru.2gis.apps/apps/..."
 ```
 
 ### Health Check Pattern

@@ -35,7 +35,7 @@ Welcome to the Mattermost Apps Plugin v2.0 refactoring project (2GIS Fork).
 
 | Aspect | v1.x | v2.0 |
 |--------|------|------|
-| **Plugin ID** | `com.mattermost.apps` | `com.2gis.apps` ⚠️ |
+| **Plugin ID** | `com.mattermost.apps` | `ru.2gis.apps` ⚠️ |
 | **Bindings** | Client requests | Server cache (on-demand) |
 | **Health Check** | Optional | **Mandatory** `/health` |
 | **Locations** | Multiple | Only `/command` |
@@ -74,7 +74,7 @@ go fmt ./...
 ## 🔑 Critical Rules
 
 ### ✅ DO:
-- Use `com.2gis.apps` namespace
+- Use `ru.2gis.apps` namespace
 - Make health check mandatory at `/health`
 - Update cache on-demand only
 - Allow only `/command` location
@@ -90,7 +90,7 @@ go fmt ./...
 **Recommended Order:**
 
 **Option 1: Namespace First (Recommended)**
-1. Этап 13: Change namespace to com.2gis.apps
+1. Этап 13: Change namespace to ru.2gis.apps
 2. Этапы 1-12: Implement features
 3. Этапы 14-16: Tests and docs
 
@@ -183,7 +183,7 @@ Progress: [====------] 40%
 
 - This is a **2GIS fork**, not official Mattermost
 - Version **2.0.0** with major breaking changes
-- Plugin ID **com.2gis.apps** (not .v2!)
+- Plugin ID **ru.2gis.apps** (not .v2!)
 - **Cannot upgrade** - requires full reinstall
 - All apps need updates for v2.0
 - Health check is **mandatory**

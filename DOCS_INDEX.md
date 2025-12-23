@@ -52,7 +52,7 @@
 ## 🔑 Key Changes in v2.0
 
 ### Namespace
-- `com.mattermost.apps` → **`com.2gis.apps`**
+- `com.mattermost.apps` → **`ru.2gis.apps`**
 - This is a 2GIS fork with breaking changes
 
 ### Bindings Cache
@@ -79,7 +79,7 @@
 ## 📋 Critical Rules
 
 ### ✅ DO:
-- Use `com.2gis.apps` everywhere
+- Use `ru.2gis.apps` everywhere
 - Implement health check at `/health` path
 - Update cache on-demand only
 - Record activity on every app call
@@ -125,7 +125,7 @@
 10. **Этап 10:** Simplify Form model
 11. **Этап 11:** Update binding.go documentation
 12. **Этап 12:** Admin refresh endpoint
-13. **Этап 13:** Change namespace to com.2gis.apps
+13. **Этап 13:** Change namespace to ru.2gis.apps
 14. **Этап 14:** Update tests
 15. **Этап 15:** Migration documentation
 16. **Этап 16:** Final verification
@@ -209,7 +209,7 @@ Example prompts:
 
 - This is a **2GIS fork** of Mattermost Apps Plugin
 - Version: **2.0.0** (major breaking changes)
-- Plugin ID: **com.2gis.apps**
+- Plugin ID: **ru.2gis.apps**
 - **Cannot upgrade in-place** - requires full reinstall
 - All apps must be updated for v2.0
 - Health check is **MANDATORY** for all apps

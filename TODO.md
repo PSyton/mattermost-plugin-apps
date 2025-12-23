@@ -1198,7 +1198,7 @@ func (a *builtinApp) Call(r *incoming.Request, creq apps.CallRequest) apps.CallR
 **Файл:** `plugin.json`
 
 **Действия:**
-- Изменить `id` с `com.mattermost.apps` на `com.2gis.apps`
+- Изменить `id` с `com.mattermost.apps` на `ru.2gis.apps`
 - Это важно для избежания проблем с кешированием на клиентах
 - Клиентский код не будет запрашивать старые endpoints
 - Подчеркивает что это fork от оригинального плагина Mattermost
@@ -1215,7 +1215,7 @@ func (a *builtinApp) Call(r *incoming.Request, creq apps.CallRequest) apps.CallR
 **Стало:**
 ```json
 {
-  "id": "com.2gis.apps",
+  "id": "ru.2gis.apps",
   "version": "2.0.0",
   ...
 }
@@ -1231,7 +1231,7 @@ func (a *builtinApp) Call(r *incoming.Request, creq apps.CallRequest) apps.CallR
 ```go
 const (
     // AppsPluginName is the name of the Apps plugin
-    AppsPluginName = "com.2gis.apps"
+    AppsPluginName = "ru.2gis.apps"
 )
 ```
 
@@ -1243,7 +1243,7 @@ const (
 
 **Код:**
 ```go
-var pluginID = "com.2gis.apps"
+var pluginID = "ru.2gis.apps"
 ```
 
 ### 13.4 Обновить пути в тестах
@@ -1256,7 +1256,7 @@ var pluginID = "com.2gis.apps"
 
 **Действия:**
 - Найти все пути с `/plugins/com.mattermost.apps/`
-- Заменить на `/plugins/com.2gis.apps/`
+- Заменить на `/plugins/ru.2gis.apps/`
 
 **Примеры:**
 ```go
@@ -1264,7 +1264,7 @@ var pluginID = "com.2gis.apps"
 appPath := "/plugins/com.mattermost.apps/apps/" + string(app.AppID)
 
 // Стало:
-appPath := "/plugins/com.2gis.apps/apps/" + string(app.AppID)
+appPath := "/plugins/ru.2gis.apps/apps/" + string(app.AppID)
 ```
 
 ### 13.5 Обновить E2E тесты
@@ -1280,8 +1280,8 @@ cy.apiEnablePluginById('com.mattermost.apps');
 cy.get('#channel-header img[src="http://localhost:8065/plugins/com.mattermost.apps/apps/hello-world/static/icon.png"]')
 
 // Стало:
-cy.apiEnablePluginById('com.2gis.apps');
-cy.get('#channel-header img[src="http://localhost:8065/plugins/com.2gis.apps/apps/hello-world/static/icon.png"]')
+cy.apiEnablePluginById('ru.2gis.apps');
+cy.get('#channel-header img[src="http://localhost:8065/plugins/ru.2gis.apps/apps/hello-world/static/icon.png"]')
 ```
 
 ### 13.6 Увеличить версию плагина
@@ -1294,7 +1294,7 @@ cy.get('#channel-header img[src="http://localhost:8065/plugins/com.2gis.apps/app
 **Код:**
 ```json
 {
-  "id": "com.2gis.apps",
+  "id": "ru.2gis.apps",
   "version": "2.0.0",
   ...
 }
@@ -1344,7 +1344,7 @@ grep -r "/plugins/com.mattermost.apps" --include="*.go" --include="*.ts" --inclu
 
 **This is a fork of the Mattermost Apps Plugin with significant changes**
 
-**Plugin ID has changed from `com.mattermost.apps` to `com.2gis.apps`**
+**Plugin ID has changed from `com.mattermost.apps` to `ru.2gis.apps`**
 
 See [MIGRATION.md](MIGRATION.md) for upgrade instructions.
 
@@ -1354,14 +1354,14 @@ Download the latest release from...
 
 All API endpoints now use the prefix:
 ```
-/plugins/com.2gis.apps/api/v1/
+/plugins/ru.2gis.apps/api/v1/
 ```
 
 ## Examples
 
 Install an app:
 ```bash
-curl -X POST https://your-server/plugins/com.2gis.apps/api/v1/apps \
+curl -X POST https://your-server/plugins/ru.2gis.apps/api/v1/apps \
   ...
 ```
 ```
@@ -1372,7 +1372,7 @@ curl -X POST https://your-server/plugins/com.2gis.apps/api/v1/apps \
 **Действия:**
 - Описать breaking changes
 - Перечислить новые возможности
-- **Важно:** Указать изменение plugin ID на com.2gis.apps
+- **Важно:** Указать изменение plugin ID на ru.2gis.apps
 
 **Содержание:**
 ```markdown
@@ -1382,7 +1382,7 @@ curl -X POST https://your-server/plugins/com.2gis.apps/api/v1/apps \
 
 **This plugin is a fork of the original Mattermost Apps Plugin with significant architectural changes**
 
-**The plugin ID has changed from `com.mattermost.apps` to `com.2gis.apps`**
+**The plugin ID has changed from `com.mattermost.apps` to `ru.2gis.apps`**
 
 This means:
 - You need to **uninstall the old plugin** before installing v2.0
@@ -1394,13 +1394,13 @@ This means:
 1. Backup your plugin configuration
 2. Note all installed apps
 3. Uninstall `com.mattermost.apps` plugin
-4. Install `com.2gis.apps` plugin
+4. Install `ru.2gis.apps` plugin
 5. Restore configuration if needed
 6. Reinstall apps (with updated manifests for v2.0)
 
 ### Breaking Changes
 
-- **Plugin ID changed**: `com.mattermost.apps` → `com.2gis.apps`
+- **Plugin ID changed**: `com.mattermost.apps` → `ru.2gis.apps`
 
 - **Server-side bindings caching**: Bindings are now cached on the server with on-demand refresh instead of periodic updates. This significantly reduces load on apps and the server.
   - Bindings are **static** and do not depend on user/channel context
@@ -1443,7 +1443,7 @@ Apps need to be updated to:
 
 ### Technical Details
 
-- All API endpoints now use `/plugins/com.2gis.apps/` prefix
+- All API endpoints now use `/plugins/ru.2gis.apps/` prefix
 - Client code will automatically use new endpoints
 - No client-side changes required (except for apps themselves)
 - Bindings cache is updated only on-demand, reducing unnecessary load
@@ -1455,12 +1455,12 @@ Apps need to be updated to:
 Перед переходом к следующему этапу убедитесь:
 
 **Манифест и версия:**
-- [ ] `plugin.json`: ID изменен на `com.2gis.apps`
+- [ ] `plugin.json`: ID изменен на `ru.2gis.apps`
 - [ ] `plugin.json`: version изменена на `2.0.0`
 - [ ] `plugin.json`: проверены все другие поля
 
 **Константы в коде:**
-- [ ] `apps/appclient/mattermost_client_pp.go`: AppsPluginName обновлен на `com.2gis.apps`
+- [ ] `apps/appclient/mattermost_client_pp.go`: AppsPluginName обновлен на `ru.2gis.apps`
 - [ ] Выполнен grep поиск `"com.mattermost.apps"` в `.go` файлах
 - [ ] Все найденные вхождения проверены и обновлены или документированы
 
@@ -1489,7 +1489,7 @@ Apps need to be updated to:
 **Тестирование после изменений:**
 ```bash
 # Проверить что старый ID больше не используется (кроме документации миграции)
-grep -r "com\.mattermost\.apps\"" --include="*.go" | grep -v "com.2gis.apps" | grep -v "CHANGELOG" | grep -v "MIGRATION"
+grep -r "com\.mattermost\.apps\"" --include="*.go" | grep -v "ru.2gis.apps" | grep -v "CHANGELOG" | grep -v "MIGRATION"
 
 # Должны найтись только новые ID
 grep -r "com\.2gis\.apps" --include="*.go" --include="*.json"
@@ -1562,7 +1562,7 @@ func TestBindingsCacheRefreshOnOperations(t *testing.T) {
 
 **Before starting migration, read this section carefully!**
 
-The plugin ID has changed from `com.mattermost.apps` to `com.2gis.apps`. This is a breaking change that requires special attention.
+The plugin ID has changed from `com.mattermost.apps` to `ru.2gis.apps`. This is a breaking change that requires special attention.
 
 ### Why the plugin ID changed
 
@@ -1589,7 +1589,7 @@ The plugin ID has changed from `com.mattermost.apps` to `com.2gis.apps`. This is
    - Or via CLI: `mattermost plugin delete com.mattermost.apps`
 
 3. **Install 2GIS fork:**
-   - Upload or install `com.2gis.apps` plugin
+   - Upload or install `ru.2gis.apps` plugin
    - Restore configuration in new plugin settings
    - Configure `app_health_check_inactivity_seconds` if needed (default: 300)
 
@@ -1604,10 +1604,10 @@ All plugin URLs have changed:
 
 ```
 OLD: /plugins/com.mattermost.apps/api/v1/...
-NEW: /plugins/com.2gis.apps/api/v1/...
+NEW: /plugins/ru.2gis.apps/api/v1/...
 
 OLD: /plugins/com.mattermost.apps/apps/<app-id>/...
-NEW: /plugins/com.2gis.apps/apps/<app-id>/...
+NEW: /plugins/ru.2gis.apps/apps/<app-id>/...
 ```
 
 **Important:** Client applications (web, mobile, desktop) will automatically use the new URLs. No client updates required.
@@ -1621,7 +1621,7 @@ Apps that make API calls to the plugin need to update their code:
 const pluginURL = "/plugins/com.mattermost.apps/api/v1/"
 
 // NEW
-const pluginURL = "/plugins/com.2gis.apps/api/v1/"
+const pluginURL = "/plugins/ru.2gis.apps/api/v1/"
 ```
 
 However, if your app uses the official SDK (`apps/appclient`), it will be updated automatically.
@@ -1965,7 +1965,7 @@ mattermost apps migrate-from-v1
 **⚠️ ВАЖНО: Этап 13 (изменение namespace) должен быть выполнен в самом начале или в конце!**
 
 ### Вариант 1: Изменить namespace в начале (рекомендуется)
-1. **Этап 13:** Изменить plugin ID на `com.2gis.apps` и обновить версию (namespace change)
+1. **Этап 13:** Изменить plugin ID на `ru.2gis.apps` и обновить версию (namespace change)
 2. **Этап 1:** Конфигурация health check (вместо периодического кеша)
 3. **Этап 2:** Создать инфраструктуру кеша (on-demand модель)
 4. **Этап 3:** Интегрировать кеш в Proxy
@@ -2000,7 +2000,7 @@ mattermost apps migrate-from-v1
 10. **Этап 10:** Упрощение Form
 11. **Этап 11:** Обновление документации в коде
 12. **Этап 12:** Admin endpoint для refresh
-13. **Этап 13:** Изменить plugin ID на `com.2gis.apps` (namespace change)
+13. **Этап 13:** Изменить plugin ID на `ru.2gis.apps` (namespace change)
 14. **Этап 14:** Обновление тестов (обновить пути для нового namespace)
 15. **Этап 15:** Документация миграции
 16. **Этап 16:** Тестирование
@@ -2030,7 +2030,7 @@ mattermost apps migrate-from-v1
 - Интервал обновления кеша в конфигурации
 
 🔄 **Изменено:**
-- Namespace: `com.mattermost.apps` → `com.2gis.apps` (вместо `com.mattermost.apps.v2`)
+- Namespace: `com.mattermost.apps` → `ru.2gis.apps` (вместо `com.mattermost.apps.v2`)
 - Модель обновления кеша: от периодической к on-demand
 - Bindings теперь полностью статичны (не зависят от user/channel)
 
@@ -2123,7 +2123,7 @@ mattermost apps migrate-from-v1
 ### Перед началом разработки
 
 1. **Решение о namespace принято:**
-   - ✅ Используем `com.2gis.apps` (2GIS fork)
+   - ✅ Используем `ru.2gis.apps` (2GIS fork)
    - Подчеркивает принадлежность и отличие от оригинала
 
 2. **Подготовить план коммуникации:**
@@ -2186,7 +2186,7 @@ mattermost apps migrate-from-v1
 ### Важные напоминания
 
 ⚠️ **Plugin ID change is CRITICAL** - это самое важное изменение в плане. Убедитесь что:
-- Все упоминания старого ID заменены на `com.2gis.apps`
+- Все упоминания старого ID заменены на `ru.2gis.apps`
 - Тесты используют новый ID
 - Документация четко описывает процесс upgrade
 - Release notes предупреждают об этом в первую очередь
@@ -2211,7 +2211,7 @@ mattermost apps migrate-from-v1
 - [ ] Все периодические обновления удалены из кода?
 - [ ] Health check работает только при неактивности?
 - [ ] Bindings действительно статичны?
-- [ ] Namespace `com.2gis.apps` везде?
+- [ ] Namespace `ru.2gis.apps` везде?
 - [ ] Документация упоминает 2GIS fork?
 - [ ] Миграционный путь понятен?
 
@@ -2333,8 +2333,8 @@ make test-e2e
 make dist
 
 # 5. Проверить манифест в бинарнике
-unzip -p dist/com.2gis.apps-*.tar.gz plugin.json | jq '.id'
-# Должно вывести: "com.2gis.apps"
+unzip -p dist/ru.2gis.apps-*.tar.gz plugin.json | jq '.id'
+# Должно вывести: "ru.2gis.apps"
 ```
 
 ### Дополнительные проверки для 2GIS fork

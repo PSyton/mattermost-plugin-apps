@@ -88,10 +88,10 @@ Checklist:
 
 ### Пример 1: Namespace change
 ```
-[Этап 13] Изменен namespace на com.2gis.apps
+[Этап 13] Изменен namespace на ru.2gis.apps
 
 Обновлены все файлы с упоминанием plugin ID:
-- plugin.json: id изменен на "com.2gis.apps"
+- plugin.json: id изменен на "ru.2gis.apps"
 - apps/appclient/mattermost_client_pp.go: константа AppsPluginName
 - test/restapitest/helper.go: переменная pluginID
 - Все пути в тестах обновлены
@@ -102,7 +102,7 @@ Checklist:
 - [x] Код компилируется
 - [x] Тесты проходят
 - [x] grep не находит старый namespace (кроме документации)
-- [x] Все URL пути обновлены на /plugins/com.2gis.apps/
+- [x] Все URL пути обновлены на /plugins/ru.2gis.apps/
 ```
 
 ### Пример 2: Health Check
@@ -210,7 +210,7 @@ grep -rn "com\.mattermost\.apps" --include="*.go" --include="*.json"
 find . -type f \( -name "*.go" -o -name "*.json" \) \
     -not -path "*/node_modules/*" \
     -not -path "*/.git/*" \
-    -exec sed -i 's/com\.mattermost\.apps/com.2gis.apps/g' {} +
+    -exec sed -i 's/com\.mattermost\.apps/ru.2gis.apps/g' {} +
 ```
 
 ### Issue: Тесты не проходят

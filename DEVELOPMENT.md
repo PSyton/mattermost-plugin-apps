@@ -98,7 +98,7 @@
 ## Critical Rules
 
 ### 1. Namespace
-- ✅ ALWAYS use `com.2gis.apps`
+- ✅ ALWAYS use `ru.2gis.apps`
 - ❌ NEVER use `com.mattermost.apps` or `com.mattermost.apps.v2`
 
 ### 2. Bindings Cache
@@ -236,7 +236,7 @@ This is recommended as first step (atomic change):
 1. Read Этап 13 in TODO.md
 2. Update all files listed in 13.1-13.10
 3. Run `./pre-commit-check.sh`
-4. Commit: `[Этап 13] Change namespace to com.2gis.apps`
+4. Commit: `[Этап 13] Change namespace to ru.2gis.apps`
 
 ### Then implement Этапы 1-12
 Follow the order in TODO.md, making commits for each sub-stage.
