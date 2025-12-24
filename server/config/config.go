@@ -43,7 +43,7 @@ var BuildDate string
 var BuildHash string
 var BuildHashShort string
 
-// Config represents the the metadata handed to all request runners (command,
+// Config represents the metadata handed to all request runners (command,
 // http).
 //
 // Config should be abbreviated as `conf`.
@@ -67,11 +67,6 @@ type Config struct {
 
 	// Maximum size of incoming remote webhook messages
 	MaxWebhookSize int
-
-	AWSRegion    string
-	AWSAccessKey string
-	AWSSecretKey string
-	AWSS3Bucket  string
 }
 
 func (conf Config) AppURL(appID apps.AppID) string {

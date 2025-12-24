@@ -5,12 +5,11 @@ package proxy
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
-	"time"
-
-	"github.com/pkg/errors"
 
 	"github.com/mattermost/mattermost-plugin-apps/apps"
 	"github.com/mattermost/mattermost-plugin-apps/server/config"
@@ -26,7 +25,7 @@ func normalizeStaticPath(conf config.Config, appID apps.AppID, icon string) (str
 	if !strings.HasPrefix(icon, "http://") && !strings.HasPrefix(icon, "https://") {
 		cleanIcon, err := utils.CleanStaticURL(icon)
 		if err != nil {
-			return "", errors.Wrap(err, "invalid icon path")
+			return "", fmt.Errorf("invalid icon path: %w", err)
 		}
 
 		icon = conf.StaticURL(appID, cleanIcon)
@@ -61,29 +60,20 @@ func (p *Proxy) getStatic(r *incoming.Request, app *apps.App, path string) (io.R
 // expanded, ignore 404 errors coming back and consider everything else a
 // "success".
 func (p *Proxy) pingApp(ctx context.Context, app *apps.App) error {
-	var timeout time.Duration
-	if app.DeployType == apps.DeployAWSLambda {
-		// Lambda functions might need to cold start and take longer to reply.
-		// Use a longer timeout.
-		timeout = pingAppTimeoutLambda
-	} else {
-		timeout = pingAppTimeout
-	}
-
-	ctx, cancel := context.WithTimeout(ctx, timeout)
+	ctx, cancel := context.WithTimeout(ctx, pingAppTimeout)
 	defer cancel()
 
 	up, err := p.upstreamForApp(app)
 	if err != nil {
-		return errors.Wrap(err, "failed to get upstream for app")
+		return fmt.Errorf("failed to get upstream for app: %w", err)
 	}
 
 	_, err = upstream.Call(ctx, up, *app, apps.CallRequest{
 		Call: apps.DefaultPing,
 	})
 
-	if err != nil && errors.Cause(err) != utils.ErrNotFound {
-		return errors.Wrapf(err, "failed to call %s endpoint", apps.DefaultPing.Path)
+	if err != nil && !errors.Is(err, utils.ErrNotFound) {
+		return fmt.Errorf("failed to call %s endpoint: %w", apps.DefaultPing.Path, err)
 	}
 
 	return nil

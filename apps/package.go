@@ -45,6 +45,4 @@
 //   - TODO Use of router packages in Apps - Go (gorilla mux) - JavaScript
 //
 //   - TODO Call vs Notification
-//
-//   - TODO AWS Lambda packaging
 package apps

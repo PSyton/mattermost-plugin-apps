@@ -3,7 +3,6 @@ package config
 import (
 	"net"
 	"net/url"
-	"os"
 	"strings"
 	"sync"
 
@@ -14,7 +13,6 @@ import (
 	"github.com/mattermost/mattermost/server/public/pluginapi"
 	"github.com/mattermost/mattermost/server/public/pluginapi/i18n"
 
-	"github.com/mattermost/mattermost-plugin-apps/upstream/upaws"
 	"github.com/mattermost/mattermost-plugin-apps/utils"
 )
 
@@ -136,11 +134,6 @@ func (s *service) newInitializedConfig(newStoredConfig StoredConfig, log utils.L
 		conf.MaxWebhookSize = int(*newMattermostConfig.FileSettings.MaxFileSize)
 	}
 
-	conf.AWSAccessKey = os.Getenv(upaws.AccessEnvVar)
-	conf.AWSSecretKey = os.Getenv(upaws.SecretEnvVar)
-	conf.AWSRegion = upaws.Region()
-	conf.AWSS3Bucket = upaws.S3BucketName()
-
 	license := s.getMattermostLicense(log)
 	conf.MattermostCloudMode = license != nil &&
 		license.Features != nil &&
@@ -148,25 +141,6 @@ func (s *service) newInitializedConfig(newStoredConfig StoredConfig, log utils.L
 		*license.Features.Cloud
 	if conf.MattermostCloudMode {
 		log.Debugf("Detected Mattermost Cloud mode based on the license")
-	}
-
-	// On community.mattermost.com license is not suitable for checking, resort
-	// to the presence of legacy environment variable to trigger it.
-	legacyAccessKey := os.Getenv(upaws.DeprecatedCloudAccessEnvVar)
-	if legacyAccessKey != "" {
-		conf.MattermostCloudMode = true
-		log.Debugf("Detected Mattermost Cloud mode based on the %s variable", upaws.DeprecatedCloudAccessEnvVar)
-		conf.AWSAccessKey = legacyAccessKey
-	}
-
-	if conf.MattermostCloudMode {
-		legacySecretKey := os.Getenv(upaws.DeprecatedCloudSecretEnvVar)
-		if legacySecretKey != "" {
-			conf.AWSSecretKey = legacySecretKey
-		}
-		if conf.AWSAccessKey == "" || conf.AWSSecretKey == "" {
-			return nil, errors.New("access credentials for AWS must be set in Mattermost Cloud mode")
-		}
 	}
 
 	if conf.AllowHTTPAppsOverride != nil {

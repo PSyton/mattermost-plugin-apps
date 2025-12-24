@@ -9,17 +9,6 @@ import (
 )
 
 func TestMergeDeployData(t *testing.T) {
-	aws := apps.AWSLambda{
-		Functions: []apps.AWSLambdaFunction{
-			{},
-		},
-	}
-	newAWS := apps.AWSLambda{
-		Functions: []apps.AWSLambdaFunction{
-			{},
-			{},
-		},
-	}
 
 	openFAAS := apps.OpenFAAS{
 		Functions: []apps.OpenFAASFunction{
@@ -59,22 +48,19 @@ func TestMergeDeployData(t *testing.T) {
 		{
 			name: "same upstreams, no add-remove",
 			prevd: apps.Deploy{
-				AWSLambda: &aws,
-				HTTP:      &http,
-				OpenFAAS:  &openFAAS,
-				Plugin:    &plugin,
+				HTTP:     &http,
+				OpenFAAS: &openFAAS,
+				Plugin:   &plugin,
 			},
 			newd: apps.Deploy{
-				AWSLambda: &newAWS,
-				HTTP:      &newHTTP,
-				OpenFAAS:  &newOpenFAAS,
-				Plugin:    &newPlugin,
+				HTTP:     &newHTTP,
+				OpenFAAS: &newOpenFAAS,
+				Plugin:   &newPlugin,
 			},
 			expected: apps.Deploy{
-				AWSLambda: &newAWS,
-				HTTP:      &newHTTP,
-				OpenFAAS:  &newOpenFAAS,
-				Plugin:    &newPlugin,
+				HTTP:     &newHTTP,
+				OpenFAAS: &newOpenFAAS,
+				Plugin:   &newPlugin,
 			},
 		},
 		{
@@ -145,15 +131,14 @@ func TestMergeDeployData(t *testing.T) {
 				Plugin:   &plugin,
 			},
 			newd: apps.Deploy{
-				AWSLambda: &newAWS,
-				HTTP:      &newHTTP,
-				OpenFAAS:  &newOpenFAAS,
+				HTTP:     &newHTTP,
+				OpenFAAS: &newOpenFAAS,
 			},
-			add:    []apps.DeployType{apps.DeployAWSLambda},
+			add:    []apps.DeployType{apps.DeployHTTP},
 			remove: []apps.DeployType{apps.DeployOpenFAAS},
 			expected: apps.Deploy{
-				AWSLambda: &newAWS,
-				Plugin:    &plugin,
+				HTTP:   &newHTTP,
+				Plugin: &plugin,
 			},
 		},
 	} {

@@ -17,8 +17,7 @@ import (
 )
 
 const (
-	pingAppTimeout       = 2 * time.Second
-	pingAppTimeoutLambda = 5 * time.Second
+	pingAppTimeout = 2 * time.Second
 )
 
 func (p *Proxy) GetManifest(appID apps.AppID) (*apps.Manifest, error) {

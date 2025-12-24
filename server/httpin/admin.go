@@ -28,8 +28,8 @@ import (
 //	Method: POST
 //	Input: JSON{
 //		Manifest...
-//		"add_deploys": []string e.g. ["aws_lambda","http"]
-//		"remove_deploys": []string e.g. ["aws_lambda","http"]
+//		"add_deploys": []string e.g. ["http","open_faas"]
+//		"remove_deploys": []string e.g. ["http","open_faas"]
 //	}
 //	Output: The updated listing manifest
 func (s *Service) UpdateAppListing(r *incoming.Request, w http.ResponseWriter, req *http.Request) {

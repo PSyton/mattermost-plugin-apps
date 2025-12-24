@@ -16,6 +16,8 @@ import (
 	"github.com/mattermost/mattermost-plugin-apps/apps"
 	"github.com/mattermost/mattermost-plugin-apps/apps/appclient"
 
+	"github.com/mattermost/mattermost-plugin-apps/upstream/upplugin"
+
 	"github.com/mattermost/mattermost-plugin-apps/server/appservices"
 	"github.com/mattermost/mattermost-plugin-apps/server/config"
 	"github.com/mattermost/mattermost-plugin-apps/server/httpout"
@@ -23,10 +25,8 @@ import (
 	"github.com/mattermost/mattermost-plugin-apps/server/session"
 	"github.com/mattermost/mattermost-plugin-apps/server/store"
 	"github.com/mattermost/mattermost-plugin-apps/upstream"
-	"github.com/mattermost/mattermost-plugin-apps/upstream/upaws"
 	"github.com/mattermost/mattermost-plugin-apps/upstream/uphttp"
 	"github.com/mattermost/mattermost-plugin-apps/upstream/upopenfaas"
-	"github.com/mattermost/mattermost-plugin-apps/upstream/upplugin"
 	"github.com/mattermost/mattermost-plugin-apps/utils"
 )
 
@@ -125,9 +125,6 @@ func (p *Proxy) Configure(conf config.Config, log utils.Logger) error {
 	p.initUpstream(apps.DeployHTTP, conf, log, func() (upstream.Upstream, error) {
 		return uphttp.NewUpstream(p.httpOut, conf.DeveloperMode, uphttp.AppRootURL), nil
 	})
-	p.initUpstream(apps.DeployAWSLambda, conf, log, func() (upstream.Upstream, error) {
-		return upaws.MakeUpstream(conf.AWSAccessKey, conf.AWSSecretKey, conf.AWSRegion, conf.AWSS3Bucket, log)
-	})
 	p.initUpstream(apps.DeployPlugin, conf, log, func() (upstream.Upstream, error) {
 		return upplugin.NewUpstream(&mm.Plugin), nil
 	})
@@ -152,7 +149,6 @@ func (p *Proxy) canDeploy(conf config.Config, deployType apps.DeployType) (allow
 	}
 
 	supportedTypes := apps.DeployTypes{
-		apps.DeployAWSLambda,
 		apps.DeployBuiltin,
 		apps.DeployPlugin,
 	}

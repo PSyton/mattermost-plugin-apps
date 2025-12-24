@@ -15,11 +15,6 @@ type DeployType string
 type DeployTypes []DeployType
 
 const (
-	// AWS Lambda-deployable app. All functions are called via AWS Lambda
-	// "Invoke" API, using path mapping provided in the app's manifest. Static
-	// assets are served out of AWS S3, using the "Download" method. Mattermost
-	// authenticates to AWS, no authentication to the App is necessary.
-	DeployAWSLambda DeployType = "aws_lambda"
 
 	// Builtin app. All functions and resources are served by directly invoking
 	// go functions. No manifest, no Mattermost to App authentication are
@@ -41,7 +36,6 @@ const (
 )
 
 var KnownDeployTypes = DeployTypes{
-	DeployAWSLambda,
 	DeployBuiltin,
 	DeployHTTP,
 	DeployOpenFAAS,
@@ -51,10 +45,6 @@ var KnownDeployTypes = DeployTypes{
 // Deploy contains App's deployment data, only the fields supported by the App
 // should be populated.
 type Deploy struct {
-	// AWSLambda contains metadata for an app that can be deployed to AWS Lambda
-	// and S3 services, and is accessed using the AWS APIs. The JSON name
-	// `aws_lambda` must match the type.
-	AWSLambda *AWSLambda `json:"aws_lambda,omitempty"`
 
 	// HTTP contains metadata for an app that is already, deployed externally
 	// and us accessed over HTTP. The JSON name `http` must match the type.
@@ -70,8 +60,7 @@ type Deploy struct {
 
 func (t DeployType) Validate() error {
 	switch t {
-	case DeployAWSLambda,
-		DeployBuiltin,
+	case DeployBuiltin,
 		DeployHTTP,
 		DeployOpenFAAS,
 		DeployPlugin:
@@ -83,8 +72,6 @@ func (t DeployType) Validate() error {
 
 func (t DeployType) String() string {
 	switch t {
-	case DeployAWSLambda:
-		return "AWS Lambda"
 	case DeployBuiltin:
 		return "Built-in"
 	case DeployHTTP:
@@ -110,16 +97,14 @@ func (t DeployTypes) Contains(typ DeployType) bool {
 func (d Deploy) Validate() error {
 	var result error
 
-	if d.AWSLambda == nil &&
-		d.HTTP == nil &&
+	if d.HTTP == nil &&
 		d.OpenFAAS == nil &&
 		d.Plugin == nil {
 		result = multierror.Append(result,
-			utils.NewInvalidError("manifest has no deployment information (http, aws_lambda, open_faas, etc.)"))
+			utils.NewInvalidError("manifest has no deployment information (http, open_faas, etc.)"))
 	}
 
 	for _, v := range []validator{
-		d.AWSLambda,
 		d.HTTP,
 		d.OpenFAAS,
 		d.Plugin,
@@ -142,9 +127,6 @@ func (d Deploy) MustDeployAs() DeployType {
 }
 
 func (d Deploy) DeployTypes() (out []DeployType) {
-	if d.AWSLambda != nil {
-		out = append(out, DeployAWSLambda)
-	}
 	if d.HTTP != nil {
 		out = append(out, DeployHTTP)
 	}
@@ -159,8 +141,6 @@ func (d Deploy) DeployTypes() (out []DeployType) {
 
 func (d Deploy) Contains(dtype DeployType) bool {
 	switch dtype {
-	case DeployAWSLambda:
-		return d.AWSLambda != nil
 	case DeployHTTP:
 		return d.HTTP != nil
 	case DeployOpenFAAS:
@@ -173,8 +153,6 @@ func (d Deploy) Contains(dtype DeployType) bool {
 
 func (d *Deploy) CopyType(src Deploy, typ DeployType) {
 	switch typ {
-	case DeployAWSLambda:
-		d.AWSLambda = src.AWSLambda
 	case DeployHTTP:
 		d.HTTP = src.HTTP
 	case DeployOpenFAAS:

@@ -29,18 +29,6 @@ func TestManifestUnmarshalJSON(t *testing.T) {
 		PluginID: "com.mattermost.hello-test",
 	}
 
-	helloAWS := hello
-	helloAWS.AWSLambda = &AWSLambda{
-		Functions: []AWSLambdaFunction{
-			{
-				Path:    "/",
-				Name:    "go-function",
-				Handler: "hello-lambda",
-				Runtime: "go1.x",
-			},
-		},
-	}
-
 	for name, test := range map[string]struct {
 		In            string
 		Expected      Manifest
@@ -64,32 +52,6 @@ func TestManifestUnmarshalJSON(t *testing.T) {
 					]
 				}`,
 			Expected: helloHTTP,
-		},
-		"aws": {
-			In: `{
-					"app_id": "hello-test",
-					"display_name": "Hello, test!",
-					"icon": "icon.png",
-					"homepage_url":"http://localhost:1111",
-					"aws_lambda": {
-						"functions": [
-							{
-								"path": "/",
-								"name": "go-function",
-								"handler": "hello-lambda",
-								"runtime": "go1.x"
-							}
-						]
-					},
-					"requested_permissions": [
-						"act_as_bot"
-					],
-					"requested_locations": [
-						"/channel_header",
-						"/command"
-					]
-				}`,
-			Expected: helloAWS,
 		},
 		"plugin": {
 			In: `{

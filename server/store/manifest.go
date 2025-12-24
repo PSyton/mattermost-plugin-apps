@@ -4,7 +4,6 @@
 package store
 
 import (
-	"context"
 	"crypto/sha1" // nolint:gosec
 	"encoding/json"
 	"fmt"
@@ -19,7 +18,6 @@ import (
 	"github.com/mattermost/mattermost-plugin-apps/server/config"
 	"github.com/mattermost/mattermost-plugin-apps/server/httpout"
 	"github.com/mattermost/mattermost-plugin-apps/server/incoming"
-	"github.com/mattermost/mattermost-plugin-apps/upstream/upaws"
 	"github.com/mattermost/mattermost-plugin-apps/utils"
 )
 
@@ -28,7 +26,6 @@ type ManifestStore interface {
 
 	StoreLocal(*incoming.Request, apps.Manifest) error
 	Get(apps.AppID) (*apps.Manifest, error)
-	GetFromS3(appID apps.AppID, version apps.AppVersion) (*apps.Manifest, error)
 	AsMap() map[apps.AppID]apps.Manifest
 	DeleteLocal(*incoming.Request, apps.AppID) error
 }
@@ -46,31 +43,22 @@ type manifestStore struct {
 
 	global map[apps.AppID]apps.Manifest
 	local  map[apps.AppID]apps.Manifest
-
-	aws           upaws.Client
-	s3AssetBucket string
 }
 
 var _ ManifestStore = (*manifestStore)(nil)
 
 func (s *Service) makeManifestStore(conf config.Config) (*manifestStore, error) {
 	log := s.conf.NewBaseLogger().With("purpose", "Manifest store")
-	awsClient, err := upaws.MakeClient(conf.AWSAccessKey, conf.AWSSecretKey, conf.AWSRegion, log)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to initialize AWS access")
-	}
 
 	mstore := &manifestStore{
-		Service:       s,
-		aws:           awsClient,
-		s3AssetBucket: conf.AWSS3Bucket,
+		Service: s,
 	}
-	if err = mstore.Configure(conf, log); err != nil {
+	if err := mstore.Configure(conf, log); err != nil {
 		return nil, errors.Wrap(err, "failed to configure")
 	}
 
 	if conf.MattermostCloudMode {
-		err = mstore.InitGlobal(s.httpOut, log)
+		err := mstore.InitGlobal(s.httpOut, log)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to initialize the global manifest list from marketplace")
 		}
@@ -106,10 +94,6 @@ func (s *manifestStore) InitGlobal(httpOut httpout.Service, log utils.Logger) er
 	for appID, loc := range manifestLocations {
 		parts := strings.SplitN(loc, ":", 2)
 		switch {
-		case len(parts) == 1:
-			data, err = s.getDataFromS3(appID, apps.AppVersion(parts[0]))
-		case len(parts) == 2 && parts[0] == "s3":
-			data, err = s.getDataFromS3(appID, apps.AppVersion(parts[1]))
 		case len(parts) == 2 && parts[0] == "file":
 			data, err = os.ReadFile(filepath.Join(assetPath, parts[1]))
 		case len(parts) == 2 && (parts[0] == "http" || parts[0] == "https"):
@@ -300,38 +284,4 @@ func (s *manifestStore) DeleteLocal(r *incoming.Request, appID apps.AppID) error
 	sc.LocalManifests = updated
 
 	return s.conf.StoreConfig(sc, r.Log)
-}
-
-// getFromS3 returns manifest data for an app from the S3
-func (s *manifestStore) getDataFromS3(appID apps.AppID, version apps.AppVersion) ([]byte, error) {
-	name := upaws.S3ManifestName(appID, version)
-	data, err := s.aws.GetS3(context.Background(), s.s3AssetBucket, name)
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to download manifest %s", name)
-	}
-
-	return data, nil
-}
-
-// GetFromS3 returns the manifest for an app from the S3
-func (s *manifestStore) GetFromS3(appID apps.AppID, version apps.AppVersion) (*apps.Manifest, error) {
-	data, err := s.getDataFromS3(appID, version)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to get manifest data")
-	}
-
-	m, err := apps.DecodeCompatibleManifest(data)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to marshal manifest data")
-	}
-
-	if m.AppID != appID {
-		return nil, errors.New("mismatched app ID")
-	}
-
-	if m.Version != version {
-		return nil, errors.New("mismatched app version")
-	}
-
-	return m, nil
 }
